@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="NumberPicker">
+        <attr name="min" format="integer"/>
+        <attr name="max" format="integer"/>
+        <attr name="value" format="integer"/>
+        <attr name="unit" format="integer" />
+        <attr name="custom_layout" format="reference" />
+        <attr name="focusable" format="boolean" />
+    </declare-styleable>
+
+    <declare-styleable name="Themes">
+        <attr name="NumberPickerLayout" format="reference"/>
+    </declare-styleable>
+
+
+    <declare-styleable name="CircleProgressBar">
+        <attr name="minValue" format="integer" />
+        <attr name="maxValue" format="integer" />
+        <attr name="progress" format="integer" />
+        <attr name="progressbarColor" format="color" />
+        <attr name="progressBarThickness" format="dimension" />
+
+    </declare-styleable>
+
+    <declare-styleable name="SpaceNavigationView">
+        <attr name="space_item_icon_size" format="dimension" />
+        <attr name="space_item_icon_only_size" format="dimension" />
+        <attr name="space_item_text_size" format="dimension" />
+        <attr name="space_background_color" format="color" />
+        <attr name="centre_button_color" format="color" />
+        <attr name="active_item_color" format="color" />
+        <attr name="inactive_item_color" format="color" />
+        <attr name="centre_button_icon" format="reference" />
+        <attr name="active_centre_button_icon_color" format="color" />
+        <attr name="inactive_centre_button_icon_color" format="color" />
+        <attr name="active_centre_button_background_color" format="color"/>
+        <attr name="centre_part_linear" format="boolean" />
+    </declare-styleable>
+
+    <declare-styleable name="SmoothCheckBox">
+        <attr name="duration" format="integer"/>
+        <attr name="stroke_width" format="dimension"/>
+        <attr name="color_tick" format="color"/>
+        <attr name="color_checked" format="color"/>
+        <attr name="color_unchecked" format="color"/>
+        <attr name="color_unchecked_stroke" format="color"/>
+    </declare-styleable>
+
+    <declare-styleable name="InkPageIndicator">
+        <attr name="dotDiameter" format="dimension" />
+        <attr name="dotGap" format="dimension" />
+        <attr name="animationDuration" format="integer" />
+        <attr name="pageIndicatorColor" format="color" />
+        <attr name="currentPageIndicatorColor" format="color" />
+    </declare-styleable>
+
+    <declare-styleable name="ParallaxLayout_Layout">
+        <attr name="layout_parallaxFactor" format="float" />
+    </declare-styleable>
+
+    <declare-styleable name="Persian">
+        <attr name="customTypeface" format="string" />
+        <attr name="withSeparator" format="boolean" />
+    </declare-styleable>
+
+</resources>

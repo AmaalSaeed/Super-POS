@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="main_header">130dp</dimen>
+    <dimen name="main_headerWithFilter">180dp</dimen>
+
+    <dimen name="h1">36dp</dimen>
+    <dimen name="h2">30dp</dimen>
+    <dimen name="h3">24dp</dimen>
+    <dimen name="h4">18dp</dimen>
+    <dimen name="h5">16dp</dimen>
+    <dimen name="h6">14dp</dimen>
+    <dimen name="h7">13dp</dimen>
+    <dimen name="h8">12dp</dimen>
+    <dimen name="h9">7dp</dimen>
+    <dimen name="h0">40dp</dimen>
+    <dimen name="curves">3dp</dimen>
+    <dimen name="report_button_height">35dp</dimen>
+    <dimen name="fab_margin">10dp</dimen>
+    <dimen name="dialog_width">350dp</dimen>
+    <dimen name="fastscroll_scrollbar_padding_end">12dp</dimen>
+    <dimen name="space_navigation_height">62dp</dimen>
+    <dimen name="main_content_height">40dp</dimen>
+    <dimen name="space_centre_button_default_size">45dp</dimen>
+    <dimen name="item_content_width">80dp</dimen>
+    <dimen name="centre_content_width">100dp</dimen>
+    <dimen name="space_item_icon_default_size">18dp</dimen>
+    <dimen name="space_item_icon_only_size">25dp</dimen>
+    <dimen name="space_item_text_default_size">16sp</dimen>
+    <dimen name="badge_left_margin">5dp</dimen>
+    <dimen name="y_offset">72dp</dimen>
+
+</resources>

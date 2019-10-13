@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/filter_background"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:fontFamily="@font/font_bol"
+        android:gravity="center_horizontal"
+        android:lineSpacingExtra="4dp"
+        android:textColor="#00574B"
+
+        android:text=" شركة التطبيقات الذكية شركة متخصصة في تطوير حلول برمجية مفيدة ومتفوقة تخدم المجتمع العربي .تم إنشاء شركة التطبيقات الذكية عام 2013. الشركة تضم نخبة المبرمجين والمطورين والمختصين في التسويق الإلكتروني " />
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:fontFamily="@font/font_bol"
+        android:gravity="center_horizontal"
+        android:lineSpacingExtra="4dp"
+        android:text="* نحب ما نعمل ونبدع فيه  \n  * دقة وإلتزام في المواعيد  \n  * مواكبة لجميع التطورات  \n  * جودة ودقة و إتقان في منتجاتنا \n  * فريق بروح واحدة لعمل جماعي متميز  "
+        android:textColor="#84b572" />
+
+    <LinearLayout
+        android:id="@+id/contact_layout"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:background="#84b572"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal"
+        android:paddingTop="5dp">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/sapps_phone"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:drawableTop="@drawable/ic_phone_white"
+            android:fontFamily="@font/font_bol"
+            android:gravity="center"
+            android:text="اتصل"
+            android:textColor="#ffffff" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_marginTop="7dp"
+            android:layout_marginBottom="7dp"
+            android:background="@android:color/black" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/sapps_whats_app"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:drawableTop="@drawable/ic_whatsapp_white"
+
+            android:fontFamily="@font/font_bol"
+            android:gravity="center"
+            android:text="واتس اب"
+            android:textColor="#ffffff" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_marginTop="7dp"
+            android:layout_marginBottom="7dp"
+            android:background="@android:color/black" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/sapps_website"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:drawableTop="@drawable/ic_internet_white"
+            android:fontFamily="@font/font_bol"
+            android:gravity="center"
+            android:text="موقعنا"
+            android:textColor="#ffffff" />
+
+
+    </LinearLayout>
+
+</LinearLayout>

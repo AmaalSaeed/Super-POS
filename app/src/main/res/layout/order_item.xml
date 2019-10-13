@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:numberpicker="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/rectangler_whit_background"
+    android:layout_marginBottom="20dp"
+    android:elevation="2dp"
+    android:layoutDirection="rtl">
+
+    <RelativeLayout
+        android:id="@+id/image_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/item_image_view"
+            android:layout_width="110dp"
+            android:layout_height="110dp"
+            android:scaleType="centerCrop" />
+
+        <ProgressBar
+            android:id="@+id/item_image_progressBr"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="55dp"
+            android:backgroundTint="@color/colorAccent"
+            android:layout_alignEnd="@+id/item_image_view"
+            android:layout_alignStart="@+id/item_image_view"
+            android:layout_alignLeft="@+id/item_image_view"
+            android:layout_alignRight="@+id/item_image_view"/>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_toEndOf="@id/image_layout"
+        android:layout_toLeftOf="@id/image_layout">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_margin="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/font_bol"
+                android:textAlignment="viewStart"
+                android:text="اسم السائق"
+                android:textSize="16sp"
+                android:textColor="@color/font_color"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"/>
+
+            <TextView
+                android:id="@+id/item_name"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="عدد العناصر: 0"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp"
+                android:fontFamily="@font/font_bol"
+                android:textAlignment="viewStart"
+                android:textColor="@color/colorPrimary"
+                android:gravity="center"
+                tools:ignore="RtlCompat"
+                android:layout_weight="1"
+                android:layout_marginTop="10dp"
+                android:textSize="16sp"/>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="رقم الطلب"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:fontFamily="@font/font_bol"
+                    android:textAlignment="viewStart"
+                    android:textColor="@color/font_color"
+                    android:gravity="center"
+                    tools:ignore="RtlCompat"
+                    android:textSize="16sp"/>
+
+                <TextView
+                    android:id="@+id/order_no"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="عدد العناصر: 0"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:fontFamily="@font/font_bol"
+                    android:textAlignment="viewStart"
+                    android:textColor="@color/colorPrimary"
+                    android:gravity="center"
+                    tools:ignore="RtlCompat"
+                    android:layout_weight="1"
+                    android:textSize="16sp"/>
+
+
+            </LinearLayout>
+        </LinearLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

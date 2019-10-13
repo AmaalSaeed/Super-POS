@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "273650250731",
+    "firebase_url": "https://super-pos.firebaseio.com",
+    "project_id": "super-pos",
+    "storage_bucket": "super-pos.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:273650250731:android:a934c666131625e982dfae",
+        "android_client_info": {
+          "package_name": "com.smartapps.super_pos"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "273650250731-ijgms1c9blo67e5u84v60u8lb1vd3eou.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.smartapps.super_pos",
+            "certificate_hash": "5f01855505eeeb34b3aada8c2072557228401d30"
+          }
+        },
+        {
+          "client_id": "273650250731-9e1gn5qubelsr9k1o90d5f1gj67kv20c.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDxwOBTY9qz95D4BYf41yGqYd6Al9p0XcU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "273650250731-9e1gn5qubelsr9k1o90d5f1gj67kv20c.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

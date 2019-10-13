@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="tab_centering">30dp</dimen>
+    <dimen name="pin_size">35dp</dimen>
+
+</resources>
