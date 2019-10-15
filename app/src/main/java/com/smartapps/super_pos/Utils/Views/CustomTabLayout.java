@@ -1,8 +1,27 @@
 package com.smartapps.super_pos.Utils.Views;
 
-//public class CustomTabLayout extends TableLayout {
+import android.content.Context;
+import android.util.AttributeSet;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TableLayout;
+import android.widget.TextView;
 
-    /*public CustomTabLayout(Context context) {
+import androidx.annotation.Nullable;
+import androidx.viewpager.widget.ViewPager;
+
+import com.google.android.material.tabs.TabLayout;
+import com.smartapps.super_pos.Items.NavItem;
+import com.smartapps.super_pos.MainActivity;
+import com.smartapps.super_pos.R;
+
+import java.util.Objects;
+
+public class CustomTabLayout extends TabLayout {
+
+    public CustomTabLayout(Context context) {
         super(context);
     }
 
@@ -120,6 +139,6 @@ package com.smartapps.super_pos.Utils.Views;
         MainActivity.ViewPagerAdapter viewPagerAdapter = (MainActivity.ViewPagerAdapter) viewPager.getAdapter();
         initCustomView(viewPagerAdapter,viewPager);
 
-    }*/
+    }
 
-//}
+}

@@ -1,17 +1,14 @@
 package com.smartapps.super_pos.Notification;
 
-import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Build;
 
 import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
 
-import com.smartapps.super_pos.MainActivity;
+import com.smartapps.super_pos.OrderActivity;
 import com.smartapps.super_pos.R;
 
 public class NotificationHelper {
@@ -19,7 +16,7 @@ public class NotificationHelper {
     public static void displayNotification(Context context, String title, String body){
         Uri uri=Uri.parse("android.resource://com.smartapps.super_pos/raw/notification1");
 
-        Intent intent = new Intent(context, MainActivity.class);
+        Intent intent = new Intent(context, OrderActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent,
                 PendingIntent.FLAG_ONE_SHOT);

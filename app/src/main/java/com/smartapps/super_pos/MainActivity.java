@@ -1,52 +1,42 @@
 package com.smartapps.super_pos;
 
-import android.app.ActionBar;
-import android.app.Activity;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
-import android.content.Intent;
-import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.content.res.ResourcesCompat;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
-import com.smartapps.super_pos.API.RetrofitAPIs;
-import com.smartapps.super_pos.API.RetrofitClientInstance;
-import com.smartapps.super_pos.Activities.OrderDetailActivity;
-import com.smartapps.super_pos.Adapters.OrderAdapter;
-import com.smartapps.super_pos.Items.Feed;
-import com.smartapps.super_pos.Items.Tables.Order;
-import com.smartapps.super_pos.Utils.Utils;
-import com.smartapps.super_pos.Utils.Views.LoadView;
+import com.smartapps.super_pos.Fragments.CurrentOrderFragment;
+import com.smartapps.super_pos.Fragments.PreviousOrderFragment;
+import com.smartapps.super_pos.Items.NavItem;
+import com.smartapps.super_pos.Utils.Views.CustomTabLayout;
+import com.smartapps.super_pos.Utils.Views.NonSwipeableViewPager;
 
-import java.util.Objects;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends ContainerActivity {
-    Toolbar mActionBarToolbar;
-    Typeface tf;
-    RecyclerView driversRv;
-    OrderAdapter orderAdapter;
-    private int resultRequests = 9999;
+    NonSwipeableViewPager viewPager;
+    ViewPagerAdapter adapter;
+    ArrayList<NavItem> navItems;
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
+    CustomTabLayout navigation;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,77 +54,87 @@ public class MainActivity extends ContainerActivity {
         FirebaseApp.initializeApp(this);
         getFirebaseAppToken();
 
-        requestData();
+        navItems = new ArrayList<>();
+        navItems.add(new NavItem(getResources().getString(R.string.nav_current_order), R.drawable.ic_home, R.drawable.ic_home_green, new CurrentOrderFragment()));
+        navItems.add(new NavItem(getResources().getString(R.string.nav_previous_order), R.drawable.ic_cats, R.drawable.ic_cats_green,new PreviousOrderFragment() ));
+        navItems.add(new NavItem(getResources().getString(R.string.nav_stock), R.drawable.ic_cats, R.drawable.ic_cats_green,new CurrentOrderFragment() ));
 
-        driversRv = findViewById(R.id.drivers_rv);
-        orderAdapter = new OrderAdapter(this, new OrderAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(Order item, int position) {
-                Intent intent = new Intent(MainActivity.this, OrderDetailActivity.class);
-                intent.putExtra("index", position);
-                intent.putExtra("order", item);
-                startActivityForResult(intent, resultRequests);
-            }
-        });
-        driversRv.setLayoutManager(new LinearLayoutManager(MainActivity.this));
-        driversRv.setAdapter(orderAdapter);
+
+
+        viewPager = findViewById(R.id.content_frame);
+        createViewPager(viewPager);
+        navigation = findViewById(R.id.tabs);
+        navigation.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
+        navigation.setupWithViewPager(viewPager,true);
+        viewPager.setCurrentItem(0);
+
     }
 
-    private void requestData() {
-        show();
-        RetrofitAPIs retrofitAPIs = RetrofitClientInstance.getRetrofitInstance().create(RetrofitAPIs.class);
+    //Tabs and ViewPager classes and methods code
+    public class ViewPagerAdapter extends FragmentPagerAdapter {
 
-        Call<Feed> call = retrofitAPIs.getFeed();
+        private List<NavItem> navItems ;
+        ViewPagerAdapter(FragmentManager manager, ArrayList<NavItem> navItems) {
+            super(manager);
+            this.navItems = navItems;
+        }
 
-        call.enqueue(new Callback<Feed>() {
-            @Override
-            public void onResponse(Call<Feed> call, Response<Feed> response) {
-                hide();
-                if (response.isSuccessful()) {
-                    hide();
-                    //Toast.makeText(getApplicationContext(), response.body().toString(), Toast.LENGTH_LONG).show();
-                    Log.v("respons ", response.body().toString());
-                    //List<Order> Orders = response.body();
-                    //Toast.makeText(getApplicationContext(), orders.size(), Toast.LENGTH_LONG).show();
-                    OrderAdapter.orders = response.body().getOrders();
-               /*
+        @Override
+        public Fragment getItem(int position) {
+            return navItems.get(position).getFragment();
+        }
 
-                for (int i=0; i<orders.size(); i++){
-                    Toast.makeText(getApplicationContext(), orders.toString(), Toast.LENGTH_LONG).show();
-                    Log.v("order: ","id: " + orders.get(i).getId() + "\n" +
-                            "status: " +orders.get(i).getStatus() + "\n" +
-                                    "created_at: " +orders.get(i).getCreated_at() + "\n" +
-                                    "updated_at: " +orders.get(i).getUpdated_at() + "\n" +
-                                    "total: " +orders.get(i).getTotal_price() + "\n" +
-                                    "driver: " +orders.get(i).getDriver().toString() + "\n" +
-                                    "items: " +orders.get(i).getProductItems().toString() + "\n" );
+        public NavItem getNavItem(int position) {
+            return navItems.get(position);
+        }
 
-                }*/
-                    orderAdapter.notifyDataSetChanged();
+        public int getNavItemPosition(String title) {
+            NavItem navItem =new NavItem(title,0,0,null);
+            if(navItems.contains(navItem)) {
+                return navItems.indexOf(navItem);
+            }else{
+                return 0;
+            }
 
-                } else {
-                    //Toast.makeText(getApplicationContext(), "Code: " + response.code(), Toast.LENGTH_LONG).show();
-                    showError(Utils.getErrorMesage(response.code()));
-                    return;
+        }
+        @Override
+        public int getCount() {
+            return navItems.size();
+        }
+
+
+
+        void removeNavItem(String title){
+            NavItem removeItem =new NavItem(title,0,0,null);
+            if(navItems.contains(removeItem)) {
+                int itemIndex = navItems.indexOf(removeItem);
+                if(navigation.getSelectedTabPosition() == itemIndex){
+                    navigation.clearOnTabSelectedListeners();
                 }
+                navItems.remove(itemIndex);
+
+                navigation.removeTabAt(itemIndex);
+                if(navItems.size() > 0){
+                    viewPager.setCurrentItem(0);
+                }
+                notifyDataSetChanged();
+                navigation.initCustomView(this,viewPager);
             }
 
-            @Override
-            public void onFailure(Call<Feed> call, Throwable t) {
-                //Toast.makeText(getApplicationContext(), t.getLocalizedMessage(), Toast.LENGTH_LONG).show();
-                showInternetError(new LoadView.OnErrorViewClickListener() {
-                    @Override
-                    public void onErrorViewClickListener() {
-                        show();
-                        requestData();
-                    }
-                });
-
-            }
+        }
 
 
-        });
 
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return navItems.get(position).getTitle();
+        }
+    }
+
+
+    private void createViewPager(ViewPager viewPager){
+        adapter = new ViewPagerAdapter(getSupportFragmentManager(),navItems);
+        viewPager.setAdapter(adapter);
     }
 
     public void getFirebaseAppToken() {
@@ -150,21 +150,5 @@ public class MainActivity extends ContainerActivity {
                         }
                     }
                 });
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == resultRequests) {
-            if (resultCode == Activity.RESULT_OK) {
-                Order editableOrder = (Order) data.getSerializableExtra("editableOrder");
-                int index = data.getIntExtra("index", 0);
-                orderAdapter.updateOrder(editableOrder, index);
-            }
-            if (resultCode == Activity.RESULT_CANCELED) {
-                //Write your code if there's no result
-            }
-        }
     }
 }

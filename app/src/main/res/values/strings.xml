@@ -1,5 +1,8 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
 
     <string name="app_name">سوبر</string>
+    <string name="nav_current_order">الطلبات الحالية</string>
+    <string name="nav_stock">عرض المخزون</string>
+    <string name="nav_previous_order">الطلبات السابقة</string>
 
 </resources>

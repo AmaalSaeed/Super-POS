@@ -103,4 +103,9 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
 
         }
     }
+
+    public void deleteOrder(int index){
+        OrderAdapter.orders.remove(index);
+        notifyDataSetChanged();
+    }
 }

@@ -1,17 +1,13 @@
 package com.smartapps.super_pos;
 
-import android.os.Bundle;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
-import com.google.firebase.FirebaseApp;
-import com.google.firebase.firestore.util.AsyncQueue;
 import com.smartapps.super_pos.Utils.Views.LoadView;
 
 import java.util.ArrayList;

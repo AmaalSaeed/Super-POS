@@ -1,18 +1,14 @@
 package com.smartapps.super_pos.Activities;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -28,24 +24,18 @@ import com.smartapps.super_pos.Items.Feed;
 import com.smartapps.super_pos.Items.Tables.Driver;
 import com.smartapps.super_pos.Items.Tables.Order;
 import com.smartapps.super_pos.Items.Tables.ProductItem;
-import com.smartapps.super_pos.MainActivity;
-import com.smartapps.super_pos.ProjectActivity;
 import com.smartapps.super_pos.R;
 import com.smartapps.super_pos.Utils.Utils;
 import com.smartapps.super_pos.Utils.Views.LoadView;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class OrderDetailActivity extends ContainerActivity {
-    Toolbar mActionBarToolbar;
-    Typeface tf;
-
     Order order;
     Driver driver;
     ArrayList<ProductItem> productItems;
@@ -116,21 +106,13 @@ public class OrderDetailActivity extends ContainerActivity {
             stateBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
                     //Toast.makeText(getApplicationContext(), "insideButn", Toast.LENGTH_SHORT).show();
                     show();
                     requestData();
                 }
             });
         }else {
-            stateBtn.setText("إنهاء");
-            stateBtn.setBackgroundColor(getResources().getColor(R.color.holder_color));
-            stateBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    finish();
-                }
-            });
+            stateBtn.setVisibility(View.GONE);
         }
 
 
@@ -156,14 +138,14 @@ public class OrderDetailActivity extends ContainerActivity {
                     returnIntent.putExtra("index", index);
                     setResult(Activity.RESULT_OK,returnIntent);
 
-                    stateBtn.setText("إنهاء");
+                    /*stateBtn.setText("إنهاء");
                     stateBtn.setBackgroundColor(getResources().getColor(R.color.holder_color));
                     stateBtn.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
                             finish();
                         }
-                    });
+                    });*/
                 } else{
                     //Toast.makeText(getApplicationContext(), "statusNotChange: ", Toast.LENGTH_SHORT).show();
                     showError(Utils.getErrorMesage(response.code()));
@@ -173,7 +155,7 @@ public class OrderDetailActivity extends ContainerActivity {
 
             @Override
             public void onFailure(Call<Feed> call, Throwable t) {
-                //Toast.makeText(getApplicationContext(), "requestFail " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "requestFail " + t.getMessage(), Toast.LENGTH_SHORT).show();
                 showInternetError(new LoadView.OnErrorViewClickListener() {
                     @Override
                     public void onErrorViewClickListener() {

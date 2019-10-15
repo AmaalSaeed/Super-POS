@@ -14,8 +14,9 @@ import retrofit2.http.POST;
 
 public interface RetrofitAPIs {
 
-    @GET("customers/orders")
-    Call<Feed> getFeed();
+    @FormUrlEncoded
+    @POST("market/orders")
+    Call<Feed> getFeed(@Field("order_type") String order_type);
 
     @GET("posts")
     Call<List<Post>> getPosts();
