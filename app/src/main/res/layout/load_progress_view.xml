@@ -117,7 +117,7 @@
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:visibility="visible"
+        android:visibility="gone"
         app:cardCornerRadius="10dp"
         app:cardElevation="@dimen/fab_margin"
         app:contentPadding="10dp">
@@ -192,6 +192,77 @@
             </LinearLayout>
 
         </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/edit_quntity_card"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="visible"
+
+        app:cardCornerRadius="10dp"
+        app:cardElevation="@dimen/fab_margin">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/edit_message"
+                android:layout_width="match_parent"
+                android:layout_height="25dp"
+                android:fontFamily="@font/font_bol"
+                android:gravity="center"
+                android:text="أدخل أو عدل أدنى حد للمنتج"
+                android:textColor="@color/font_color" />
+
+            <EditText
+                android:id="@+id/edit_quntity_text"
+                android:layout_width="170dp"
+                android:layout_height="40dp"
+                android:fontFamily="@font/font_bol"
+                android:gravity="center"
+                android:textColor="@color/font_color"
+                android:inputType="number"
+                android:focusable="true" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/cancel_button_edit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="visible"
+                    android:layout_weight="1"
+                    android:backgroundTint="@color/colorPrimary"
+                    android:fontFamily="@font/font_bol"
+                    android:gravity="center"
+                    android:text="الغاء"
+                    android:textColor="@android:color/white" />
+
+                <Button
+                    android:id="@+id/edit_quntity_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/colorAccent"
+                    android:fontFamily="@font/font_bol"
+                    android:gravity="center"
+                    android:width="0dp"
+                    android:layout_weight="1"
+                    android:text="حفظ"
+                    android:textColor="@android:color/white" />
+            </LinearLayout>
+
+        </LinearLayout>
+
 
     </androidx.cardview.widget.CardView>
 

@@ -39,7 +39,8 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_toEndOf="@id/image_layout"
-        android:layout_toLeftOf="@id/image_layout">
+        android:layout_toLeftOf="@id/image_layout"
+        android:layout_marginRight="10dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -48,31 +49,32 @@
             android:layout_margin="10dp">
 
             <TextView
-                android:layout_width="wrap_content"
+                android:id="@+id/item_name"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/font_bol"
                 android:textAlignment="viewStart"
-                android:text="اسم السائق"
+                android:text="اسم المنتج"
                 android:textSize="16sp"
                 android:textColor="@color/font_color"
                 android:layout_marginTop="5dp"
-                android:layout_marginLeft="10dp"/>
+                android:layout_marginLeft="10dp"
+                android:layout_weight="1"
+                />
 
-            <TextView
-                android:id="@+id/item_name"
-                android:layout_width="match_parent"
+            <!--<TextView
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:text="عدد العناصر: 0"
+                android:text="الحد الأدنى"
                 android:layout_marginRight="10dp"
                 android:layout_marginLeft="10dp"
                 android:fontFamily="@font/font_bol"
-                android:textAlignment="viewStart"
+                android:textAlignment="viewEnd"
                 android:textColor="@color/colorPrimary"
                 android:gravity="center"
                 tools:ignore="RtlCompat"
-                android:layout_weight="1"
-                android:layout_marginTop="5dp"
-                android:textSize="16sp"/>
+                android:layout_marginTop="10dp"
+                android:textSize="16sp"/>-->
 
 
         </LinearLayout>
@@ -86,12 +88,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginBottom="10dp">
+                android:layout_marginLeft="10dp">
 
                 <TextView
+                    android:id="@+id/quantity_no"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:text="رقم الطلب"
+                    android:text="الكمية المتوفرة"
                     android:layout_marginRight="10dp"
                     android:layout_marginLeft="10dp"
                     android:fontFamily="@font/font_bol"
@@ -99,22 +102,22 @@
                     android:textColor="@color/font_color"
                     android:gravity="center"
                     tools:ignore="RtlCompat"
-                    android:textSize="16sp"/>
+                    android:textSize="12sp"/>
 
                 <TextView
-                    android:id="@+id/order_no"
+                    android:id="@+id/min_qty"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:text="عدد العناصر: 0"
+                    android:text="0"
                     android:layout_marginRight="10dp"
                     android:layout_marginLeft="10dp"
                     android:fontFamily="@font/font_bol"
-                    android:textAlignment="viewStart"
+                    android:textAlignment="viewEnd"
                     android:textColor="@color/colorPrimary"
                     android:gravity="center"
                     tools:ignore="RtlCompat"
                     android:layout_weight="1"
-                    android:textSize="16sp"/>
+                    android:textSize="12sp"/>
 
 
             </LinearLayout>

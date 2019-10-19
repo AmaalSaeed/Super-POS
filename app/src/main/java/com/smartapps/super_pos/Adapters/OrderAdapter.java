@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -34,6 +33,12 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
     public void updateOrder(Order order, int index){
         OrderAdapter.orders.set(index, order);
         notifyItemChanged(index);
+    }
+
+    public void updateList(ArrayList<Order> orders) {
+        OrderAdapter.orders.clear();
+        OrderAdapter.orders = orders;
+        notifyDataSetChanged();
     }
 
     @Override

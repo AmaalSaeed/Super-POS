@@ -1,0 +1,176 @@
+package com.smartapps.super_pos.Fragments;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Toast;
+
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.smartapps.super_pos.API.RetrofitAPIs;
+import com.smartapps.super_pos.API.RetrofitClientInstance;
+import com.smartapps.super_pos.Activities.OrderDetailActivity;
+import com.smartapps.super_pos.Adapters.StockAdapter;
+import com.smartapps.super_pos.Items.NavItem;
+import com.smartapps.super_pos.Items.Tables.Stock;
+import com.smartapps.super_pos.R;
+import com.smartapps.super_pos.Utils.Utils;
+import com.smartapps.super_pos.Utils.Views.LoadView;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+public class StockMinFragment extends ProjectFragment {
+    RecyclerView stockRv;
+    StockAdapter stockAdapter;
+    int min_quntity;
+    int productId;
+
+    public static void setChangeStockMinQuntityViewClickListener(ChangeStockMinQuntityViewClickListener changeStockMinQuntityViewClickListener) {
+        StockMinFragment.changeStockMinQuntityViewClickListener = changeStockMinQuntityViewClickListener;
+    }
+
+    private static ChangeStockMinQuntityViewClickListener changeStockMinQuntityViewClickListener;
+
+    public StockMinFragment() {
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        requestData();
+
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View rootView = inflater.inflate(R.layout.fragment_order, container, false);
+
+        stockRv = rootView.findViewById(R.id.drivers_rv);
+        stockAdapter = new StockAdapter(getActivity(), new StockAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(int product_id) {
+                productId = product_id;
+
+                getProjectActivity().showEditQuntity(new LoadView.OnEditQuntityViewClickListener() {
+                    @Override
+                    public void onEditQuntityViewClickListener(int quntity) {
+                        min_quntity = quntity;
+                        //Toast.makeText(getProjectActivity(),"qty: " + min_quntity + "product_id: " + product_id, Toast.LENGTH_SHORT).show();
+                        changeStockMinQuntity(product_id, min_quntity);
+                    }
+                });
+            }
+        });
+        stockRv.setLayoutManager(new LinearLayoutManager(getActivity()));
+        stockRv.setAdapter(stockAdapter);
+
+        return rootView;
+    }
+
+    private void requestData() {
+        getProjectActivity().show();
+        RetrofitAPIs retrofitAPIs = RetrofitClientInstance.getRetrofitInstance().create(RetrofitAPIs.class);
+
+        Call<Stock> call = retrofitAPIs.getStock("min");
+
+        call.enqueue(new Callback<Stock>() {
+            @Override
+            public void onResponse(Call<Stock> call, Response<Stock> response) {
+                getProjectActivity().hide();
+                if (response.isSuccessful()) {
+                    getProjectActivity().hide();
+                    Log.v("respons ", response.body().toString());
+                    //StockAdapter.productItems = response.body().getProductItems();
+                    stockAdapter.updateList(response.body().getProductItems());
+                    stockAdapter.notifyDataSetChanged();
+
+                } else {
+                    getProjectActivity().showError(Utils.getErrorMesage(response.code()));
+                    return;
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Stock> call, Throwable t) {
+                getProjectActivity().showInternetError(new LoadView.OnErrorViewClickListener() {
+                    @Override
+                    public void onErrorViewClickListener() {
+                        getProjectActivity().show();
+                        requestData();
+                    }
+                });
+
+            }
+
+        });
+
+    }
+
+    public void changeStockMinQuntity(int product_id, int min_qty){
+        getProjectActivity().show();
+        RetrofitAPIs retrofitAPIs = RetrofitClientInstance.getRetrofitInstance().create(RetrofitAPIs.class);
+
+        Call<Stock> call = retrofitAPIs.changeStorkMinQtY(product_id, min_qty);
+
+        call.enqueue(new Callback<Stock>() {
+            @Override
+            public void onResponse(Call<Stock> call, Response<Stock> response) {
+                getProjectActivity().hide();
+                if (response.isSuccessful()) {
+                    getProjectActivity().hide();
+                    Log.v("respons ", response.body().toString());
+                    int editableMin_qty = response.body().getProductItems().get(0).getMin_quantity();
+                    int product_id = response.body().getProductItems().get(0).getId();
+                    //Toast.makeText(getContext(), "editableMin: "+ editableMin_qty + "product_id: "+ product_id, Toast.LENGTH_LONG).show();
+                    if(changeStockMinQuntityViewClickListener != null)
+                        changeStockMinQuntityViewClickListener.changeStockMinQuntityViewClickListener(product_id, editableMin_qty);
+                    stockAdapter.notifyDataSetChanged();
+
+                } else {
+                    getProjectActivity().showError(Utils.getErrorMesage(response.code()));
+                    return;
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Stock> call, Throwable t) {
+                getProjectActivity().showInternetError(new LoadView.OnErrorViewClickListener() {
+                    @Override
+                    public void onErrorViewClickListener() {
+                        getProjectActivity().show();
+                        changeStockMinQuntity(productId, min_quntity);
+                    }
+                });
+
+            }
+
+        });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        requestData();
+
+    }
+    @Override
+    public void onResumeFragment(NavItem navItem) {
+
+        if(navItem.getTitle().equals(R.string.nav_min_stock)) {
+            requestData();
+        }
+    }
+
+    public interface ChangeStockMinQuntityViewClickListener{
+        void changeStockMinQuntityViewClickListener(int product_id, int min_qty);
+    }
+}

@@ -6,6 +6,7 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -15,16 +16,19 @@ import com.smartapps.super_pos.R;
 
 public class LoadView extends RelativeLayout {
 
-    private CardView load, error, upload;
-    private Button button;
+    private CardView load, error, upload, editQuntity;
+    private Button button, editButton;
     private TextView percent, message, errorText,wait;
+    private EditText quntityText;
     private CircleProgressBar circleProgressBar;
     private OnErrorViewClickListener onErrorViewClickListener;
     private OnErrorCancelClickListener onErrorCancelClickListener;
     private OnUploadCancelViewClickListener onUploadCancelViewClickListener;
     private OnUploadHideViewClickListener onUploadHideViewClickListener;
-    private Button hide, cancel;
+    private OnEditQuntityViewClickListener onEditQuntityViewClickListener;
+    private Button hide, cancel, cancelEdit;
     private View errorCancel;
+    int quntity;
 
     public LoadView(Context context , ViewGroup.LayoutParams layoutParams) {
         super(context);
@@ -48,6 +52,7 @@ public class LoadView extends RelativeLayout {
         inflate(getContext(), R.layout.load_progress_view, this);
         load = findViewById(R.id.load_card);
         error = findViewById(R.id.error_card);
+        editQuntity = findViewById(R.id.edit_quntity_card);
         button = findViewById(R.id.error_button);
         errorCancel = findViewById(R.id.cancel_button_error);
         upload = findViewById(R.id.upload_card);
@@ -57,6 +62,9 @@ public class LoadView extends RelativeLayout {
         errorText = findViewById(R.id.error_text);
         message = findViewById(R.id.message);
         wait = findViewById(R.id.waiting);
+        editButton = findViewById(R.id.edit_quntity_button);
+        quntityText = findViewById(R.id.edit_quntity_text);
+        cancelEdit = findViewById(R.id.cancel_button_edit);
 
         errorCancel.setOnClickListener(v -> {
             if(onErrorCancelClickListener != null){
@@ -81,7 +89,6 @@ public class LoadView extends RelativeLayout {
         hide();
         this.setOnClickListener(v -> {
         });
-
 
     }
 
@@ -131,6 +138,7 @@ public class LoadView extends RelativeLayout {
         upload.setVisibility(GONE);
         errorCancel.setVisibility(GONE);
         error.setVisibility(VISIBLE);
+        editQuntity.setVisibility(GONE);
 
         this.onErrorViewClickListener = onErrorViewClickListener;
         button.setOnClickListener(v -> {this.onErrorViewClickListener.onErrorViewClickListener();
@@ -146,6 +154,7 @@ public class LoadView extends RelativeLayout {
         upload.setVisibility(GONE);
         errorText.setText(s);
         error.setVisibility(VISIBLE);
+        editQuntity.setVisibility(GONE);
 
         errorCancel.setVisibility(VISIBLE);
         this.onErrorCancelClickListener = onErrorCancelClickListener;
@@ -163,6 +172,7 @@ public class LoadView extends RelativeLayout {
         error.setVisibility(VISIBLE);
         errorCancel.setVisibility(VISIBLE);
         button.setVisibility(GONE);
+        editQuntity.setVisibility(GONE);
 
         errorCancel.setOnClickListener(v -> hide());
 
@@ -177,6 +187,7 @@ public class LoadView extends RelativeLayout {
         error.setVisibility(VISIBLE);
         errorCancel.setVisibility(VISIBLE);
         button.setVisibility(GONE);
+        editQuntity.setVisibility(GONE);
 
         errorCancel.setOnClickListener(v -> hide());
 
@@ -193,11 +204,13 @@ public class LoadView extends RelativeLayout {
         upload.setVisibility(GONE);
         this.error.setVisibility(VISIBLE);
         errorCancel.setVisibility(GONE);
+        editQuntity.setVisibility(GONE);
 
         this.onErrorViewClickListener = onErrorViewClickListener;
         button.setOnClickListener(v -> {this.onErrorViewClickListener.onErrorViewClickListener();
             hide();
-        });    }
+        });
+    }
 
     public void setUploadMessage(String me) {
         message.setText(me);
@@ -207,6 +220,7 @@ public class LoadView extends RelativeLayout {
         error.setVisibility(GONE);
         upload.setVisibility(GONE);
         load.setVisibility(VISIBLE);
+        editQuntity.setVisibility(GONE);
         setProgress(0);
     }
 
@@ -214,6 +228,7 @@ public class LoadView extends RelativeLayout {
         error.setVisibility(GONE);
         load.setVisibility(GONE);
         upload.setVisibility(VISIBLE);
+        editQuntity.setVisibility(GONE);
         setProgress(progress);
 
     }
@@ -233,7 +248,43 @@ public class LoadView extends RelativeLayout {
         error.setVisibility(GONE);
         load.setVisibility(GONE);
         upload.setVisibility(VISIBLE);
+        editQuntity.setVisibility(GONE);
         setProgress(0);
+    }
+
+    public void showEditQuntity(OnEditQuntityViewClickListener onEditQuntityViewClickListener) {
+        this.setVisibility(VISIBLE);
+        this.editQuntity.setVisibility(VISIBLE);
+        this.quntityText.setVisibility(VISIBLE);
+        this.quntityText.requestFocus();
+        this.editButton.setVisibility(VISIBLE);
+        this.cancelEdit.setVisibility(VISIBLE);
+        errorText.setVisibility(GONE);
+        load.setVisibility(GONE);
+        upload.setVisibility(GONE);
+        error.setVisibility(GONE);
+        errorCancel.setVisibility(GONE);
+        button.setVisibility(GONE);
+        percent.setVisibility(GONE);
+        message.setVisibility(GONE);
+        wait.setVisibility(GONE);
+        //quntity = quntityText.getText().toString();
+        quntityText.setText("");
+
+
+        this.onEditQuntityViewClickListener = onEditQuntityViewClickListener;
+        editButton.setOnClickListener(v -> {
+            quntity = Integer.parseInt(quntityText.getText().toString());
+            this.onEditQuntityViewClickListener.onEditQuntityViewClickListener(quntity);
+
+        hide();
+        });
+        cancelEdit.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                hide();
+            }
+        });
     }
 
     public interface OnErrorViewClickListener {
@@ -250,6 +301,10 @@ public class LoadView extends RelativeLayout {
 
     public interface OnUploadHideViewClickListener {
         void onUploadHideViewClickListener();
+    }
+
+    public interface OnEditQuntityViewClickListener {
+        void onEditQuntityViewClickListener(int quntity);
     }
 
     public static boolean notEmpty(String s) {

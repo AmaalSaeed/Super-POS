@@ -98,6 +98,10 @@ public class ProjectActivity extends AppCompatActivity {
         addToDisposables(executeDelay(50).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(string -> loadView.showError(s, onErrorViewClickListener)));
     }
 
+    public void showEditQuntity(LoadView.OnEditQuntityViewClickListener onEditQuntityViewClickListener) {
+        addToDisposables(executeDelay(50).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(string -> loadView.showEditQuntity(onEditQuntityViewClickListener)));
+    }
+
     public void addToDisposables(Disposable disposable) {
         if (disposable != null)
             disposables.add(disposable);

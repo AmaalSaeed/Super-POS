@@ -17,10 +17,13 @@ import com.smartapps.super_pos.API.RetrofitClientInstance;
 import com.smartapps.super_pos.Activities.OrderDetailActivity;
 import com.smartapps.super_pos.Adapters.OrderAdapter;
 import com.smartapps.super_pos.Items.Feed;
+import com.smartapps.super_pos.Items.NavItem;
 import com.smartapps.super_pos.Items.Tables.Order;
 import com.smartapps.super_pos.R;
 import com.smartapps.super_pos.Utils.Utils;
 import com.smartapps.super_pos.Utils.Views.LoadView;
+
+import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -67,7 +70,9 @@ public class CurrentOrderFragment extends ProjectFragment {
     }
 
     private void requestData() {
-        getProjectActivity().show();
+        if(getProjectActivity() != null) {
+            getProjectActivity().show();
+        }
         RetrofitAPIs retrofitAPIs = RetrofitClientInstance.getRetrofitInstance().create(RetrofitAPIs.class);
 
         Call<Feed> call = retrofitAPIs.getFeed("current");
@@ -79,7 +84,8 @@ public class CurrentOrderFragment extends ProjectFragment {
                 if (response.isSuccessful()) {
                     getProjectActivity().hide();
                     Log.v("respons ", response.body().toString());
-                    OrderAdapter.orders = response.body().getOrders();
+                    //OrderAdapter.orders = response.body().getOrders();
+                    orderAdapter.updateList(response.body().getOrders());
                     orderAdapter.notifyDataSetChanged();
 
                 } else {
@@ -118,6 +124,21 @@ public class CurrentOrderFragment extends ProjectFragment {
             if (resultCode == Activity.RESULT_CANCELED) {
                 //Write your code if there's no result
             }
+        }
+    }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        requestData();
+
+    }
+    @Override
+    public void onResumeFragment(NavItem navItem) {
+
+        if(navItem.getTitle().equals(R.string.nav_current_order)) {
+            requestData();
         }
     }
 }

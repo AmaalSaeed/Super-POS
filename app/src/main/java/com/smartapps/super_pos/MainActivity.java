@@ -20,6 +20,8 @@ import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 import com.smartapps.super_pos.Fragments.CurrentOrderFragment;
 import com.smartapps.super_pos.Fragments.PreviousOrderFragment;
+import com.smartapps.super_pos.Fragments.StockFragment;
+import com.smartapps.super_pos.Fragments.StockMinFragment;
 import com.smartapps.super_pos.Items.NavItem;
 import com.smartapps.super_pos.Utils.Views.CustomTabLayout;
 import com.smartapps.super_pos.Utils.Views.NonSwipeableViewPager;
@@ -31,6 +33,7 @@ public class MainActivity extends ContainerActivity {
     NonSwipeableViewPager viewPager;
     ViewPagerAdapter adapter;
     ArrayList<NavItem> navItems;
+    int selected;
 
     @Override
     public void onBackPressed() {
@@ -55,9 +58,10 @@ public class MainActivity extends ContainerActivity {
         getFirebaseAppToken();
 
         navItems = new ArrayList<>();
-        navItems.add(new NavItem(getResources().getString(R.string.nav_current_order), R.drawable.ic_home, R.drawable.ic_home_green, new CurrentOrderFragment()));
-        navItems.add(new NavItem(getResources().getString(R.string.nav_previous_order), R.drawable.ic_cats, R.drawable.ic_cats_green,new PreviousOrderFragment() ));
-        navItems.add(new NavItem(getResources().getString(R.string.nav_stock), R.drawable.ic_cats, R.drawable.ic_cats_green,new CurrentOrderFragment() ));
+        navItems.add(new NavItem(getResources().getString(R.string.nav_current_order), R.drawable.ic_current_order, R.drawable.ic_current_order_green, new CurrentOrderFragment()));
+        navItems.add(new NavItem(getResources().getString(R.string.nav_previous_order), R.drawable.ic_previous_order, R.drawable.ic_previous_order_green,new PreviousOrderFragment() ));
+        navItems.add(new NavItem(getResources().getString(R.string.nav_min_stock), R.drawable.ic_stock_display, R.drawable.ic_stock_display_green,new StockMinFragment() ));
+        navItems.add(new NavItem(getResources().getString(R.string.nav_stock), R.drawable.ic_stock_display, R.drawable.ic_stock_display_green,new StockFragment() ));
 
 
 
@@ -67,6 +71,22 @@ public class MainActivity extends ContainerActivity {
         navigation.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
         navigation.setupWithViewPager(viewPager,true);
         viewPager.setCurrentItem(0);
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                selected = position;
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
 
     }
 
@@ -77,6 +97,10 @@ public class MainActivity extends ContainerActivity {
         ViewPagerAdapter(FragmentManager manager, ArrayList<NavItem> navItems) {
             super(manager);
             this.navItems = navItems;
+        }
+
+        public NavItem getCurrentItem() {
+            return navItems.get(selected);
         }
 
         @Override
@@ -150,5 +174,12 @@ public class MainActivity extends ContainerActivity {
                         }
                     }
                 });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        adapter.getCurrentItem().getFragment().onResume();
+
     }
 }

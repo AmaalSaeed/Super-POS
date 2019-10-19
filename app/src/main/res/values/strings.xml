@@ -4,5 +4,6 @@
     <string name="nav_current_order">الطلبات الحالية</string>
     <string name="nav_stock">عرض المخزون</string>
     <string name="nav_previous_order">الطلبات السابقة</string>
+    <string name="nav_min_stock">نقص المخزون</string>
 
 </resources>

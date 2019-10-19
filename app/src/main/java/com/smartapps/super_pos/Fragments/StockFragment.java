@@ -1,22 +1,20 @@
 package com.smartapps.super_pos.Fragments;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.smartapps.super_pos.API.RetrofitAPIs;
 import com.smartapps.super_pos.API.RetrofitClientInstance;
-import com.smartapps.super_pos.Activities.OrderDetailActivity;
-import com.smartapps.super_pos.Adapters.OrderAdapter;
-import com.smartapps.super_pos.Items.Feed;
+import com.smartapps.super_pos.Adapters.StockAdapter;
 import com.smartapps.super_pos.Items.NavItem;
-import com.smartapps.super_pos.Items.Tables.Order;
+import com.smartapps.super_pos.Items.Tables.Stock;
 import com.smartapps.super_pos.R;
 import com.smartapps.super_pos.Utils.Utils;
 import com.smartapps.super_pos.Utils.Views.LoadView;
@@ -25,12 +23,11 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class PreviousOrderFragment extends ProjectFragment {
-    RecyclerView driversRv;
-    OrderAdapter orderAdapter;
-    private int resultRequests = 9999;
+public class StockFragment extends ProjectFragment  {
+    RecyclerView stockRv;
+    StockAdapter stockAdapter;
 
-    public PreviousOrderFragment() {
+    public StockFragment() {
     }
 
     @Override
@@ -47,41 +44,42 @@ public class PreviousOrderFragment extends ProjectFragment {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_order, container, false);
 
-        driversRv = rootView.findViewById(R.id.drivers_rv);
-        orderAdapter = new OrderAdapter(getActivity(), new OrderAdapter.OnItemClickListener() {
+        stockRv = rootView.findViewById(R.id.drivers_rv);
+        stockAdapter = new StockAdapter(getActivity(), new StockAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(Order item, int position) {
-                Intent intent = new Intent(getActivity(), OrderDetailActivity.class);
-                intent.putExtra("index", position);
-                intent.putExtra("order", item);
-                startActivityForResult(intent, resultRequests);
+            public void onItemClick(int product_id) {
+
+                getProjectActivity().showEditQuntity(new LoadView.OnEditQuntityViewClickListener() {
+                    @Override
+                    public void onEditQuntityViewClickListener(int quntity) {
+                        int min_quntity = quntity;
+                        Toast.makeText(getProjectActivity(), min_quntity, Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         });
-        driversRv.setLayoutManager(new LinearLayoutManager(getActivity()));
-        driversRv.setAdapter(orderAdapter);
-
+        stockRv.setLayoutManager(new LinearLayoutManager(getActivity()));
+        stockRv.setAdapter(stockAdapter);
 
         return rootView;
     }
 
     private void requestData() {
-        if(getProjectActivity() != null) {
-            getProjectActivity().show();
-        }
+        getProjectActivity().show();
         RetrofitAPIs retrofitAPIs = RetrofitClientInstance.getRetrofitInstance().create(RetrofitAPIs.class);
 
-        Call<Feed> call = retrofitAPIs.getFeed("previous");
+        Call<Stock> call = retrofitAPIs.getStock("normal");
 
-        call.enqueue(new Callback<Feed>() {
+        call.enqueue(new Callback<Stock>() {
             @Override
-            public void onResponse(Call<Feed> call, Response<Feed> response) {
+            public void onResponse(Call<Stock> call, Response<Stock> response) {
                 getProjectActivity().hide();
                 if (response.isSuccessful()) {
                     getProjectActivity().hide();
                     Log.v("respons ", response.body().toString());
-                    //OrderAdapter.orders = response.body().getOrders();
-                    orderAdapter.updateList(response.body().getOrders());
-                    orderAdapter.notifyDataSetChanged();
+                    //StockAdapter.productItems = response.body().getProductItems();
+                    stockAdapter.updateList(response.body().getProductItems());
+                    stockAdapter.notifyDataSetChanged();
 
                 } else {
                     getProjectActivity().showError(Utils.getErrorMesage(response.code()));
@@ -90,7 +88,7 @@ public class PreviousOrderFragment extends ProjectFragment {
             }
 
             @Override
-            public void onFailure(Call<Feed> call, Throwable t) {
+            public void onFailure(Call<Stock> call, Throwable t) {
                 getProjectActivity().showInternetError(new LoadView.OnErrorViewClickListener() {
                     @Override
                     public void onErrorViewClickListener() {
@@ -100,7 +98,6 @@ public class PreviousOrderFragment extends ProjectFragment {
                 });
 
             }
-
 
         });
 
@@ -112,13 +109,11 @@ public class PreviousOrderFragment extends ProjectFragment {
         requestData();
 
     }
-
     @Override
     public void onResumeFragment(NavItem navItem) {
 
-        if(navItem.getTitle().equals(R.string.nav_previous_order)) {
+        if(navItem.getTitle().equals(R.string.nav_stock)) {
             requestData();
-
         }
     }
 }

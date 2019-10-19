@@ -15,7 +15,7 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/drivers_rv"
-        android:paddingTop="30dp"
+        android:paddingTop="20dp"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
         android:paddingBottom="10dp"
