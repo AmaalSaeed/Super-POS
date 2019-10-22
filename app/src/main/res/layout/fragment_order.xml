@@ -25,5 +25,10 @@
 
     </androidx.core.widget.NestedScrollView>
 
+    <com.smartapps.super_pos.Utils.Views.LoadView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/load_view"/>
+
 
 </RelativeLayout>

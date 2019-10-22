@@ -22,7 +22,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
 
     private static final String TAG = OrderAdapter.class.getSimpleName();
     private Context mContext;
-    public static ArrayList<Order> orders = new ArrayList<>();
+    public ArrayList<Order> orders = new ArrayList<>();
     private OnItemClickListener ordersener;
 
     public OrderAdapter(Context context, OnItemClickListener onItemClickListener) {
@@ -31,13 +31,13 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
     }
 
     public void updateOrder(Order order, int index){
-        OrderAdapter.orders.set(index, order);
+        orders.set(index, order);
         notifyItemChanged(index);
     }
 
     public void updateList(ArrayList<Order> orders) {
-        OrderAdapter.orders.clear();
-        OrderAdapter.orders = orders;
+        this.orders.clear();
+        this.orders = orders;
         notifyDataSetChanged();
     }
 
@@ -53,24 +53,28 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
         Order order = orders.get(position);
         Driver driver = orders.get(position).getDriver();
 
-        holder.driverName.setText(driver.getName());
-        holder.orderNo.setText(String.valueOf(order.getId()));
-        if (!TextUtils.isEmpty(driver.getImageUrl())) {
-            Picasso.get().load(driver.getImageUrl()).into(holder.driverImage);
-            holder.driverImageBr.setVisibility(View.GONE);
-        } else {
-            Picasso.get().load(driver.getImageUrl()).into(holder.driverImage, new com.squareup.picasso.Callback() {
-                @Override
-                public void onSuccess() {
-                    holder.driverImageBr.setVisibility(View.GONE);
+        if (driver != null){
+            holder.driverName.setText(driver.getName());
 
-                }
+            holder.orderNo.setText(String.valueOf(order.getId()));
+            if (!TextUtils.isEmpty(driver.getImageUrl())) {
+                Picasso.get().load(driver.getImageUrl()).into(holder.driverImage);
+                holder.driverImageBr.setVisibility(View.GONE);
+            } else {
+                Picasso.get().load(driver.getImageUrl()).into(holder.driverImage, new com.squareup.picasso.Callback() {
+                    @Override
+                    public void onSuccess() {
+                        holder.driverImageBr.setVisibility(View.GONE);
 
-                @Override
-                public void onError(Exception e) {
-                }
-            });
+                    }
+
+                    @Override
+                    public void onError(Exception e) {
+                    }
+                });
+            }
         }
+
 
         //TODO setup views
 
@@ -110,7 +114,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
     }
 
     public void deleteOrder(int index){
-        OrderAdapter.orders.remove(index);
+        this.orders.remove(index);
         notifyDataSetChanged();
     }
 }

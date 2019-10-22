@@ -85,7 +85,8 @@ public class OrderActivity extends ContainerActivity {
                     Log.v("respons ", response.body().toString());
                     //List<Order> Orders = response.body();
                     //Toast.makeText(getApplicationContext(), orders.size(), Toast.LENGTH_LONG).show();
-                    OrderAdapter.orders = response.body().getOrders();
+                    //OrderAdapter.orders = response.body().getOrders();
+                    orderAdapter.updateList(response.body().getOrders());
                /*
 
                 for (int i=0; i<orders.size(); i++){

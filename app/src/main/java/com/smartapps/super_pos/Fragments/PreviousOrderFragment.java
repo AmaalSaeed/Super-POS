@@ -1,5 +1,6 @@
 package com.smartapps.super_pos.Fragments;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -7,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -19,6 +21,7 @@ import com.smartapps.super_pos.Items.NavItem;
 import com.smartapps.super_pos.Items.Tables.Order;
 import com.smartapps.super_pos.R;
 import com.smartapps.super_pos.Utils.Utils;
+import com.smartapps.super_pos.Utils.Views.CustomTabLayout;
 import com.smartapps.super_pos.Utils.Views.LoadView;
 
 import retrofit2.Call;
@@ -29,6 +32,7 @@ public class PreviousOrderFragment extends ProjectFragment {
     RecyclerView driversRv;
     OrderAdapter orderAdapter;
     private int resultRequests = 9999;
+    LoadView loadView;
 
     public PreviousOrderFragment() {
     }
@@ -37,7 +41,7 @@ public class PreviousOrderFragment extends ProjectFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        requestData();
+        //requestData();
 
     }
 
@@ -47,6 +51,7 @@ public class PreviousOrderFragment extends ProjectFragment {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_order, container, false);
 
+        loadView = rootView.findViewById(R.id.load_view);
         driversRv = rootView.findViewById(R.id.drivers_rv);
         orderAdapter = new OrderAdapter(getActivity(), new OrderAdapter.OnItemClickListener() {
             @Override
@@ -66,7 +71,7 @@ public class PreviousOrderFragment extends ProjectFragment {
 
     private void requestData() {
         if(getProjectActivity() != null) {
-            getProjectActivity().show();
+            loadView.show();
         }
         RetrofitAPIs retrofitAPIs = RetrofitClientInstance.getRetrofitInstance().create(RetrofitAPIs.class);
 
@@ -75,26 +80,29 @@ public class PreviousOrderFragment extends ProjectFragment {
         call.enqueue(new Callback<Feed>() {
             @Override
             public void onResponse(Call<Feed> call, Response<Feed> response) {
-                getProjectActivity().hide();
+                loadView.hide();
                 if (response.isSuccessful()) {
-                    getProjectActivity().hide();
+                    loadView.hide();
                     Log.v("respons ", response.body().toString());
                     //OrderAdapter.orders = response.body().getOrders();
-                    orderAdapter.updateList(response.body().getOrders());
-                    orderAdapter.notifyDataSetChanged();
+                    if (response.body().getOrders().size()>0){
+                        orderAdapter.updateList(response.body().getOrders());
+                        orderAdapter.notifyDataSetChanged();
+                    } else
+                        loadView.showError("لا توجد بيانات حاليا");
 
                 } else {
-                    getProjectActivity().showError(Utils.getErrorMesage(response.code()));
+                    loadView.showError(Utils.getErrorMesage(response.code()));
                     return;
                 }
             }
 
             @Override
             public void onFailure(Call<Feed> call, Throwable t) {
-                getProjectActivity().showInternetError(new LoadView.OnErrorViewClickListener() {
+                loadView.showError(new LoadView.OnErrorViewClickListener() {
                     @Override
                     public void onErrorViewClickListener() {
-                        getProjectActivity().show();
+                        loadView.show();
                         requestData();
                     }
                 });
@@ -107,16 +115,21 @@ public class PreviousOrderFragment extends ProjectFragment {
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
-        requestData();
+     //   requestData();
 
     }
 
     @Override
     public void onResumeFragment(NavItem navItem) {
-
-        if(navItem.getTitle().equals(R.string.nav_previous_order)) {
+        super.onResumeFragment(navItem);
+       if(navItem.getTitle().equals(R.string.nav_previous_order)) {
             requestData();
 
         }

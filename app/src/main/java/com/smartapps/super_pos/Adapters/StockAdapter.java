@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.smartapps.super_pos.Fragments.StockFragment;
 import com.smartapps.super_pos.Fragments.StockMinFragment;
 import com.smartapps.super_pos.Items.Tables.Product;
 import com.smartapps.super_pos.Items.Tables.ProductItem;
@@ -20,21 +21,27 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-public class StockAdapter extends RecyclerView.Adapter<StockAdapter.ViewHolder> implements StockMinFragment.ChangeStockMinQuntityViewClickListener {
+public class StockAdapter extends RecyclerView.Adapter<StockAdapter.ViewHolder> implements StockMinFragment.ChangeStockMinQuntityViewClickListener1, StockFragment.ChangeStockMinQuntityViewClickListener2 {
     private static final String TAG = OrderAdapter.class.getSimpleName();
     private Context mContext;
-    public static ArrayList<ProductItem> productItems = new ArrayList<>();
+    public ArrayList<ProductItem> productItems = new ArrayList<>();
     private StockAdapter.OnItemClickListener orderlistener;
 
-    public StockAdapter(Context context, StockAdapter.OnItemClickListener onItemClickListener) {
+    public StockAdapter(Context context, StockAdapter.OnItemClickListener onItemClickListener, StockMinFragment stockMinFragment) {
         this.mContext = context;
         this.orderlistener = onItemClickListener;
-        StockMinFragment.setChangeStockMinQuntityViewClickListener(this);
+        stockMinFragment.setChangeStockMinQuntityViewClickListener1(this);
+    }
+
+    public StockAdapter(Context context , StockAdapter.OnItemClickListener onItemClickListener, StockFragment stockFragment) {
+        this.mContext = context;
+        this.orderlistener = onItemClickListener;
+        stockFragment.setChangeStockMinQuntityViewClickListener2(this);
     }
 
     public void updateList(ArrayList<ProductItem> productItems) {
-        StockAdapter.productItems.clear();
-        StockAdapter.productItems = productItems;
+        this.productItems.clear();
+        this.productItems.addAll(productItems);
         notifyDataSetChanged();
     }
 
@@ -94,12 +101,26 @@ public class StockAdapter extends RecyclerView.Adapter<StockAdapter.ViewHolder> 
         }
              return id;
     }
-    @Override
+    /*@Override
     public void changeStockMinQuntityViewClickListener(int product_id, int min_qty) {
         int position = getPosition(product_id);
         productItems.get(position).setMin_quantity(min_qty);
         notifyItemChanged(position);
 
+    }*/
+
+    @Override
+    public void changeStockMinQuntityViewClickListener2(int product_id, int min_qty) {
+        int position = getPosition(product_id);
+        productItems.get(position).setMin_quantity(min_qty);
+        notifyItemChanged(position);
+    }
+
+    @Override
+    public void changeStockMinQuntityViewClickListener1(int product_id, int min_qty) {
+        int position = getPosition(product_id);
+        productItems.get(position).setMin_quantity(min_qty);
+        notifyItemChanged(position);
     }
 
     public interface OnItemClickListener {

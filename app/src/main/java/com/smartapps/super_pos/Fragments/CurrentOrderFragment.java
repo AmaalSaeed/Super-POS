@@ -1,13 +1,16 @@
 package com.smartapps.super_pos.Fragments;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -21,6 +24,7 @@ import com.smartapps.super_pos.Items.NavItem;
 import com.smartapps.super_pos.Items.Tables.Order;
 import com.smartapps.super_pos.R;
 import com.smartapps.super_pos.Utils.Utils;
+import com.smartapps.super_pos.Utils.Views.CustomTabLayout;
 import com.smartapps.super_pos.Utils.Views.LoadView;
 
 import java.util.Objects;
@@ -31,9 +35,10 @@ import retrofit2.Response;
 
 
 public class CurrentOrderFragment extends ProjectFragment {
-    RecyclerView driversRv;
     OrderAdapter orderAdapter;
+    RecyclerView driversRv;
     private int resultRequests = 9999;
+    LoadView loadView;
 
     public CurrentOrderFragment() {
     }
@@ -42,7 +47,7 @@ public class CurrentOrderFragment extends ProjectFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        requestData();
+        //requestData();
 
     }
 
@@ -52,6 +57,7 @@ public class CurrentOrderFragment extends ProjectFragment {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_order, container, false);
 
+        loadView = rootView.findViewById(R.id.load_view);
         driversRv = rootView.findViewById(R.id.drivers_rv);
         orderAdapter = new OrderAdapter(getActivity(), new OrderAdapter.OnItemClickListener() {
             @Override
@@ -69,9 +75,9 @@ public class CurrentOrderFragment extends ProjectFragment {
         return rootView;
     }
 
-    private void requestData() {
+    public void requestData() {
         if(getProjectActivity() != null) {
-            getProjectActivity().show();
+            loadView.show();
         }
         RetrofitAPIs retrofitAPIs = RetrofitClientInstance.getRetrofitInstance().create(RetrofitAPIs.class);
 
@@ -80,26 +86,31 @@ public class CurrentOrderFragment extends ProjectFragment {
         call.enqueue(new Callback<Feed>() {
             @Override
             public void onResponse(Call<Feed> call, Response<Feed> response) {
-                getProjectActivity().hide();
                 if (response.isSuccessful()) {
-                    getProjectActivity().hide();
                     Log.v("respons ", response.body().toString());
+                    //Toast.makeText(getActivity(), response.body().getOrders().size()+"", Toast.LENGTH_SHORT).show();
                     //OrderAdapter.orders = response.body().getOrders();
-                    orderAdapter.updateList(response.body().getOrders());
-                    orderAdapter.notifyDataSetChanged();
+                    if (response.body().getOrders().size()>0){
+                        orderAdapter.updateList(response.body().getOrders());
+                        orderAdapter.notifyDataSetChanged();
+                        loadView.hide();
+                    } else{
+                        loadView.showError("لا توجد بيانات حاليا");
+
+                    }
 
                 } else {
-                    getProjectActivity().showError(Utils.getErrorMesage(response.code()));
+                    loadView.showError(Utils.getErrorMesage(response.code()));
                     return;
                 }
             }
 
             @Override
             public void onFailure(Call<Feed> call, Throwable t) {
-                getProjectActivity().showInternetError(new LoadView.OnErrorViewClickListener() {
+                loadView.showError(new LoadView.OnErrorViewClickListener() {
                     @Override
                     public void onErrorViewClickListener() {
-                        getProjectActivity().show();
+                        loadView.show();
                         requestData();
                     }
                 });
@@ -131,12 +142,18 @@ public class CurrentOrderFragment extends ProjectFragment {
     @Override
     public void onResume() {
         super.onResume();
-        requestData();
+    //    requestData();
 
     }
     @Override
-    public void onResumeFragment(NavItem navItem) {
+    public void onStart() {
 
+        super.onStart();
+    }
+
+    @Override
+    public void onResumeFragment(NavItem navItem) {
+        super.onResumeFragment(navItem);
         if(navItem.getTitle().equals(R.string.nav_current_order)) {
             requestData();
         }

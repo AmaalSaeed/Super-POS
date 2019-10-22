@@ -60,7 +60,7 @@ public class MainActivity extends ContainerActivity {
         navItems = new ArrayList<>();
         navItems.add(new NavItem(getResources().getString(R.string.nav_current_order), R.drawable.ic_current_order, R.drawable.ic_current_order_green, new CurrentOrderFragment()));
         navItems.add(new NavItem(getResources().getString(R.string.nav_previous_order), R.drawable.ic_previous_order, R.drawable.ic_previous_order_green,new PreviousOrderFragment() ));
-        navItems.add(new NavItem(getResources().getString(R.string.nav_min_stock), R.drawable.ic_stock_display, R.drawable.ic_stock_display_green,new StockMinFragment() ));
+        navItems.add(new NavItem(getResources().getString(R.string.nav_min_stock), R.drawable.ic_stock_min_display, R.drawable.ic_stock_min_display_green,new StockMinFragment() ));
         navItems.add(new NavItem(getResources().getString(R.string.nav_stock), R.drawable.ic_stock_display, R.drawable.ic_stock_display_green,new StockFragment() ));
 
 
@@ -89,6 +89,7 @@ public class MainActivity extends ContainerActivity {
         });
 
     }
+
 
     //Tabs and ViewPager classes and methods code
     public class ViewPagerAdapter extends FragmentPagerAdapter {
