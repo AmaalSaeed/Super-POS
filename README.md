@@ -18,5 +18,5 @@ Screenshots are included in the `/screenshots` folder.
 
 ## 🧭 Note
 
-This project is no longer actively maintained. It serves as an archive of previous work in Android development using Java. Current focus: QA Engineering & Automation.
+This project is no longer actively maintained. It serves as an archive of previous work in Android development using Java.
 
